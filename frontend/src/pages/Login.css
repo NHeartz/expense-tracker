@@ -1,0 +1,361 @@
+.login-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw; /* บังคับกว้างเต็มจอ 100% ของ Viewport */
+  height: 100vh; /* เผื่อไว้สำหรับเบราว์เซอร์รุ่นเก่า */
+  height: 100dvh; /* แก้ปัญหาขอบขาวด้านล่างบนมือถือ (Dynamic Viewport) */
+  /* พื้นหลังไล่เฉดสีชมพูแบบ 3 ระดับให้เห็นชัดเจนขึ้น */
+  background: linear-gradient(135deg, #ff4081 0%, #ff9a9e 50%, #fecfef 100%);
+  font-family: 'Prompt', sans-serif;
+  overflow: hidden; /* ป้องกันการล้นขอบหน้าจอ */
+}
+
+/* สร้างครึ่งวงกลมสีขาวฝั่งขวา */
+.login-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%; /* ใช้ % แทน vw เพื่อให้แบ่งครึ่งจอเป๊ะๆ */
+  height: 100%;
+  background: #ffffff;
+  border-radius: 50% 0 0 50% / 50% 0 0 50%; /* ดัดขอบให้โค้งเป็นรูปครึ่งวงกลม */
+  z-index: 10; /* ปรับให้วงกลมลอยอยู่เหนือฟอร์ม เวลาสไลด์จะดูเนียนเหมือนวิ่งทับฟอร์ม */
+  /* เพิ่มลูกเล่นการเด้งดึ๋งเล็กน้อยด้วย cubic-bezier */
+  transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55), border-radius 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* สไลด์ครึ่งวงกลมไปทางซ้ายสุดขอบ */
+.login-container.right-panel-active::after {
+  transform: translateX(-100%); /* สไลด์ไปทางซ้ายเท่ากับขนาดความกว้างตัวมันเอง */
+  border-radius: 0 50% 50% 0 / 0 50% 50% 0; /* กลับด้านความโค้ง */
+}
+
+/* คอนเทนเนอร์ของฟอร์ม (ฝั่งซ้ายและขวา) */
+.form-container {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  max-width: 420px;
+  box-sizing: border-box; /* บังคับขนาดความกว้างให้คงที่เสมอ */
+  z-index: 1;
+  transition: all 0.8s ease-in-out;
+}
+
+.sign-in-container {
+  left: 25%; /* กึ่งกลางของฝั่งซ้าย (ครึ่งของ 50%) */
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  visibility: visible;
+}
+
+.login-container.right-panel-active .sign-in-container {
+  transform: translate(-50%, -50%); /* เอาการสไลด์ออก ให้อยู่กับที่ */
+  opacity: 0;
+  visibility: hidden;
+}
+
+.sign-up-container {
+  left: 75%; /* กึ่งกลางของฝั่งขวา (50% + 25%) */
+  transform: translate(-50%, -50%); /* เอาการสไลด์ออก ให้อยู่กับที่ */
+  opacity: 0;
+  visibility: hidden;
+}
+
+.login-container.right-panel-active .sign-up-container {
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  visibility: visible;
+}
+
+/* คอนเทนเนอร์ของข้อความชวนสมัคร/ล็อกอิน ที่ขยับตามวงกลมสีขาว */
+.overlay-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%; /* กว้างเท่าวงกลมสีขาว (50%) */
+  height: 100%;
+  z-index: 11; /* ให้อยู่เหนือวงกลมสีขาวอีกชั้น (สำหรับแสดงข้อความชวนสมัคร/ล็อกอิน) */
+  transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  pointer-events: none;
+}
+
+.login-container.right-panel-active .overlay-container {
+  transform: translateX(-100%); /* ขยับข้อความตามวงกลมไปฝั่งซ้าย */
+}
+
+.overlay-panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  transition: opacity 0.4s ease-in-out;
+  pointer-events: auto;
+  width: 100%;
+}
+
+.overlay-right {
+  opacity: 1;
+  visibility: visible;
+}
+
+.login-container.right-panel-active .overlay-right {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.overlay-left {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.login-container.right-panel-active .overlay-left {
+  opacity: 1;
+  visibility: visible;
+}
+
+.register-text {
+  color: #666;
+  margin: 0;
+  font-size: 18px; /* ขยายตัวอักษรขึ้นนิดนึงให้ดูโดดเด่น */
+  font-weight: 500;
+}
+
+.register-btn {
+  color: #ff758c !important;
+  border-color: #ff758c !important;
+  border-radius: 20px !important;
+  font-weight: 500 !important;
+}
+
+.register-btn:hover {
+  background: #ff758c !important;
+  color: #fff !important;
+  box-shadow: 0 4px 15px rgba(255, 117, 140, 0.3) !important;
+}
+
+.login-card {
+  width: 100%;
+  padding: 40px 36px; /* ปรับระยะขอบบนล่างนิดหน่อยให้สมดุล */
+  box-sizing: border-box; /* ป้องกันไม่ให้ padding ดันกล่องจนกว้างไม่เท่ากัน */
+  /* อัปเกรด Glassmorphism ให้ดูเป็นกระจกที่หรูขึ้น */
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(255, 117, 140, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 32px;
+  margin-bottom: 4px;
+  /* ทำให้ตัวหนังสือไล่เฉดสี */
+  background: linear-gradient(135deg, #ff4081 0%, #ff758c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.login-subtitle {
+  color: #555;
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+/* ลิงก์ลืมรหัสผ่าน */
+.forgot-password-link {
+  display: block;
+  text-align: right; /* จัดให้อยู่ชิดขวาของกล่อง */
+  margin-top: 4px;
+  font-size: 13px;
+  color: #666;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.forgot-password-link:hover {
+  color: #ff4081; /* เปลี่ยนเป็นสีชมพูเข้มตอนเอาเมาส์ชี้ */
+}
+
+/* อัปเกรดปุ่ม Login ให้มีแสงเงาและลูกเล่นตอน Hover */
+.login-btn {
+  background: linear-gradient(135deg, #ff4081 0%, #ff758c 100%) !important;
+  border: none !important;
+  font-weight: 500 !important;
+  margin-top: 12px;
+  box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4) !important;
+  transition: all 0.3s ease !important;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 117, 140, 0.6) !important;
+}
+
+/* ==========================================
+   Animation สำหรับฟอร์มลืมรหัสผ่าน (Expand/Collapse)
+   ========================================== */
+.password-section {
+  max-height: 250px;
+  opacity: 1;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+}
+
+.password-section.hidden {
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+.reset-section {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+}
+
+.reset-section.expanded {
+  max-height: 350px; /* เพิ่มพื้นที่เผื่อสำหรับให้ช่องกรอกรหัสผ่านใหม่แสดงได้ครบถ้วน */
+  opacity: 1;
+}
+
+.reset-desc {
+  font-size: 13px;
+  color: #666;
+  text-align: center;
+  margin: 0 0 16px 0;
+}
+
+/* ==========================================
+   Responsive สำหรับหน้าจอมือถือ (Mobile)
+   ========================================== */
+@media (max-width: 768px) {
+  /* สร้างครึ่งวงกลมสีขาวด้านล่าง */
+  .login-container::after {
+    width: 100%;
+    height: 25vh; /* กินพื้นที่ 25% ของความสูงจอ */
+    top: auto;
+    bottom: 0;
+    border-radius: 50% 50% 0 0; /* ทำให้โค้งขึ้นด้านบน */
+    transform: none !important; /* ปิดแอนิเมชันสไลด์ */
+    z-index: 0; /* ให้อยู่หลังสุด */
+    /* เพิ่ม transition ให้รองรับการขยายความสูง (height) */
+    transition: height 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55), border-radius 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
+  }
+  
+  /* เมื่อเป็นหน้าสมัครสมาชิก ให้ขยายครึ่งวงกลมขึ้นมา 90% */
+  .login-container.right-panel-active::after {
+    height: 90vh !important;
+    border-radius: 40px 40px 0 0 !important; /* ลดความโค้งลงนิดหน่อยให้ดูสวยงามเมื่อเต็มจอ */
+    transform: none !important;
+  }
+
+  /* ปรับตำแหน่งฟอร์มให้อยู่เหนือวงกลม */
+  .form-container {
+    width: 90% !important;
+    max-width: 340px !important;
+    left: 50% !important;
+    top: 38% !important; /* ปรับตำแหน่งให้อยู่กลางพื้นที่ที่เหลือ */
+    transform: translate(-50%, -50%) !important;
+    opacity: 0;
+    visibility: hidden;
+    /* เพิ่ม transition เพื่อให้ฟอร์มขยับขึ้นลงอย่างนุ่มนวล */
+    transition: top 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.4s ease-in-out !important;
+  }
+
+  /* เลื่อนฟอร์มลงมาอยู่ในวงกลมสีขาวเมื่อกดสมัครสมาชิก */
+  .login-container.right-panel-active .form-container {
+    top: 48% !important; /* ดันลงมาให้อยู่กึ่งกลางของพื้นที่สีขาว */
+  }
+
+  /* จัดการเรื่องการสลับหน้าให้แสดงผลเฉพาะหน้าที่ active */
+  .sign-in-container, .sign-up-container {
+    left: 50% !important;
+  }
+
+  /* เมื่อหน้า Login ทำงาน */
+  .login-container:not(.right-panel-active) .sign-in-container {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
+  /* เมื่อหน้า Register ทำงาน */
+  .login-container.right-panel-active .sign-up-container {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
+  /* ปิดแอนิเมชันที่ทำให้ฟอร์มกระเด็นไปข้างๆ ในโหมดมือถือ */
+  .login-container.right-panel-active .sign-in-container {
+    transform: translate(-50%, -50%) !important; 
+  }
+  
+  .login-card {
+    padding: 24px 20px; 
+    max-height: 60vh; /* ลดความสูงสูงสุดของฟอร์มลง */
+    overflow-y: auto;
+  }
+
+  /* ลดขนาดตัวหนังสือหัวข้อลงให้เหมาะกับมือถือ */
+  .login-title {
+    font-size: 26px;
+  }
+  .login-subtitle {
+    font-size: 14px;
+  }
+
+  /* ย้ายกลุ่มปุ่มสลับหน้า ไปไว้ในครึ่งวงกลมด้านล่าง */
+  .overlay-container {
+    width: 100%;
+    height: 25vh; /* สูงเท่ากับครึ่งวงกลม */
+    top: auto;
+    bottom: 0;
+    transform: none !important;
+    z-index: 11; /* ให้อยู่เหนือวงกลม */
+    transition: height 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
+  }
+
+  /* ลดพื้นที่ของปุ่มสลับหน้าในหน้าสมัครสมาชิก เพื่อให้ฟอร์มมีพื้นที่มากขึ้น */
+  .login-container.right-panel-active .overlay-container {
+    height: 15vh !important;
+    transform: none !important;
+  }
+
+  /* จัดปุ่มให้อยู่ตรงกลางของครึ่งวงกลม */
+  .overlay-panel {
+    top: 50% !important; /* จัดกึ่งกลางแนวตั้ง */
+    bottom: auto !important; /* ยกเลิกการเกาะขอบล่าง */
+    transform: translate(-50%, -50%) !important; /* จัดกึ่งกลางแนวนอนและแนวตั้ง */
+  }
+
+  /* เปลี่ยนสีข้อความกลับเป็นสีเทา (เพราะอยู่บนพื้นขาว) */
+  .register-text {
+    color: #666; /* กลับเป็นสีเดิม */
+    font-size: 16px;
+  }
+
+  /* เปลี่ยนสไตล์ปุ่มกลับเป็นแบบขอบชมพู (เพราะอยู่บนพื้นขาว) */
+  .register-btn {
+    background: transparent !important;
+    color: #ff758c !important;
+    border-color: #ff758c !important; /* เพิ่มเส้นขอบกลับเข้ามา */
+  }
+}

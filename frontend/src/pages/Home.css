@@ -1,0 +1,124 @@
+.home-layout {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fff0f5 0%, #e0f7fa 100%);
+}
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* ทำให้แถบเมนูด้านบนเป็นกระจกใสเบลอๆ */
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0 24px;
+  box-shadow: 0 4px 20px rgba(255, 117, 140, 0.08) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.home-title {
+  margin: 0 !important;
+  /* ตัวหนังสือไล่สีแบบเดียวกับหน้า Login */
+  background: linear-gradient(135deg, #ff4081 0%, #ff758c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700 !important;
+}
+
+.home-content {
+  padding: 32px 24px;
+  max-width: 100%; /* ขยายให้เนื้อหาเต็มความกว้างหน้าจอ */
+  width: 100%;
+  /* แอนิเมชันค่อยๆ ลอยขึ้นมาตอนเปิดหน้า Dashboard */
+  animation: slideUpFade 0.5s ease-out forwards;
+}
+
+.stat-card, .form-card, .table-card {
+  border-radius: 16px !important;
+  box-shadow: 0 8px 24px rgba(255, 117, 140, 0.04) !important;
+  border: 1px solid rgba(255, 117, 140, 0.08) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ลูกเล่นตอนนำเมาส์ไปชี้ที่การ์ดสรุปยอด */
+.stat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(255, 117, 140, 0.12) !important;
+}
+
+/* เอฟเฟกต์ตอนชี้ที่ชื่อผู้ใช้ด้านบนขวา */
+.user-dropdown-trigger {
+  transition: background 0.3s ease;
+}
+.user-dropdown-trigger:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.logout-btn {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+}
+
+/* สไตล์สำหรับตาราง */
+.empty-category {
+  color: #ccc;
+}
+
+.amount-income {
+  color: #52c41a;
+  font-weight: 500;
+}
+
+.amount-expense {
+  color: #ff4d4f;
+  font-weight: 500;
+}
+
+/* สไตล์สำหรับการ์ดสรุปยอด */
+.stat-row {
+  margin-bottom: 24px;
+}
+
+.stat-balance-positive .ant-statistic-content {
+  color: #3f8600 !important;
+  font-weight: 600 !important;
+}
+
+.stat-balance-negative .ant-statistic-content {
+  color: #cf1322 !important;
+  font-weight: 600 !important;
+}
+
+.stat-income .ant-statistic-content {
+  color: #52c41a !important;
+}
+
+.stat-expense .ant-statistic-content {
+  color: #ff4d4f !important;
+}
+
+/* สไตล์สำหรับฟอร์ม */
+.full-width-input {
+  width: 100% !important;
+}
+
+.submit-form-item {
+  margin-bottom: 0;
+}
+
+/* ==========================================
+   Responsive สำหรับหน้าจอมือถือ (Mobile)
+   ========================================== */
+@media (max-width: 768px) {
+  .home-header {
+    padding: 0 12px; /* ลดขอบซ้ายขวาลงเพื่อเพิ่มพื้นที่ให้ตัวหนังสือ */
+  }
+  .home-title {
+    font-size: 18px !important; /* ลดขนาดตัวอักษรหัวข้อลงเล็กน้อย */
+    white-space: nowrap; /* บังคับไม่ให้คำถูกปัดตกไปบรรทัดใหม่ */
+  }
+}
