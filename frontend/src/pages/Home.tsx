@@ -315,7 +315,7 @@ const Home: React.FC = () => {
     return catData.map((x: any) => ({
       name: x.category,
       value: x.amount
-    })).sort((a, b) => b.value - a.value);
+    })).sort((a: any, b: any) => b.value - a.value);
   };
 
   const pieData = getPieDataForMonth(dayjs()); // สำหรับหน้าหลัก (เดือนปัจจุบันเสมอ)
