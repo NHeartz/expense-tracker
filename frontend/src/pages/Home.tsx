@@ -295,7 +295,7 @@ const Home: React.FC = () => {
   ];
 
   // ข้อมูลสรุปยอดคงเหลือแบบรายเดือนสำหรับ Modal ยอดเงินคงเหลือ
-  const monthlySummaryData = [...dashboard.monthlySummary].sort((a: any, b: any) => {
+  const monthlySummaryData = [...dashboard.monthlySummary].sort((a: { year: number, month: number }, b: { year: number, month: number }) => {
     if (a.year !== b.year) return b.year - a.year;
     return b.month - a.month;
   }).map((x: any) => ({
@@ -594,7 +594,7 @@ const Home: React.FC = () => {
                         dataKey="value"
                         label={(props: any) => `${props.name} ${(props.percent * 100).toFixed(0)}%`}
                       >
-                        {pieData.map((entry, index) => (
+                        {pieData.map((_entry: any, index: number) => (
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
@@ -897,7 +897,7 @@ const Home: React.FC = () => {
                     dataKey="value"
                     label={(props: any) => `${props.name} ${(props.percent * 100).toFixed(0)}%`}
                   >
-                    {modalPieData.map((entry, index) => (
+                    {modalPieData.map((_entry: any, index: number) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
