@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // TODO: เช็ค Port ของ Backend คุณอีกครั้ง (ดูได้จาก Terminal ที่รัน dotnet run)
 // เช่น http://localhost:5200 หรือ https://localhost:7198
-const API_URL = 'http://localhost:5250/api'; 
+const API_URL = 'https://expense-tracker-api-eg1x.onrender.com/api'; 
 
 export const axiosClient = axios.create({
   baseURL: API_URL,
